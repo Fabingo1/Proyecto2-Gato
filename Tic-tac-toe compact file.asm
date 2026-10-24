@@ -1,3 +1,22 @@
+; IMPRIMIR: muestra un texto terminado en '$'
+IMPRIMIR MACRO msg
+    PUSH AX
+    PUSH DX
+    LEA  DX, msg
+    MOV  AH, 09h
+    INT  21h
+    POP  DX
+    POP  AX
+ENDM
+
+; LIMPIAR_PANTALLA: borra la pantalla (modo texto 80x25)
+LIMPIAR_PANTALLA MACRO
+    PUSH AX
+    MOV  AX, 0003h
+    INT  10h
+    POP  AX
+ENDM
+
 .MODEL SMALL
 .STACK 100H
 
