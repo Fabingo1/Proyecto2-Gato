@@ -61,6 +61,7 @@ ENDM
 
     MSG_BAR         DB  ' | $'
     MSG_DASH        DB  '---------',0Dh,0Ah,'$'
+    MSG_TITULO      DB  '=====  G A T O  =====',0Dh,0Ah,'$'
 
      ;  Feature 5,6 string
        
@@ -93,7 +94,10 @@ MAIN PROC
 OUTER_REPLAY_GAME_LOOP:
 
     CALL RESET_GAME
+    LIMPIAR_PANTALLA        ; pantalla limpia al iniciar cada partida
+    IMPRIMIR MSG_TITULO
     CALL ASK_WHO_FIRST
+    CALL DRAW_BOARD         ; muestra el tablero vacio desde el inicio
 
 
 GAME_LOOP:
@@ -151,6 +155,7 @@ DO_PLAYER_TURN:
     JMP  GAME_LOOP
 
 INVALID_MOVE:
+    CALL DRAW_BOARD         ; redibuja el tablero para no acumular texto
     CALL PRINT_NEWLINE
     IMPRIMIR MSG_INVALID
     CALL PRINT_NEWLINE
@@ -296,6 +301,8 @@ DRAW_BOARD PROC
     PUSH CX
     PUSH DX
 
+    LIMPIAR_PANTALLA        ; borra la pantalla: el tablero siempre queda arriba
+    IMPRIMIR MSG_TITULO
     CALL PRINT_NEWLINE
 
     MOV CX, 9
