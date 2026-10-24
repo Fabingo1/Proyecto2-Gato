@@ -83,14 +83,14 @@ la jugada.
 _(Se completa conforme se hagan los cambios.)_
 
 - [x] Macros `IMPRIMIR` y `LIMPIAR_PANTALLA`.
-- [ ] Interfaz: borrar la pantalla y mostrar el tablero desde el inicio.
-- [ ] Retraso mientras la computadora "piensa".
+- [x] Interfaz: borrar la pantalla y mostrar el tablero desde el inicio.
+- [x] Retraso mientras la computadora "piensa".
 - [ ] Menú principal y pausa.
 - [ ] Vidas, Game Over y victoria de la partida.
 - [ ] Puntaje acumulado y High Score.
 - [ ] Marcador de más de un dígito.
 - [ ] Alineación de las variables en memoria.
-- [ ] Comentarios del código en español.
+- [x] Comentarios del código en español.
 
 ## Estructura del repositorio
 
