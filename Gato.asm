@@ -17,6 +17,10 @@ LIMPIAR_PANTALLA MACRO
     POP  AX
 ENDM
 
+; Tiempo que la computadora "piensa" antes de jugar, en centesimas de
+; segundo (100 = 1 segundo). Debe ser menor que 6000 (60 segundos).
+RETRASO_CPU EQU 100
+
 .MODEL SMALL
 .STACK 100H
 
@@ -166,7 +170,10 @@ DO_COMPUTER_TURN:
 
       MOV  AL, 1                           ; 1 = computer turn
     CALL SHOW_TURN_INDICATOR
- 
+
+    MOV  AX, RETRASO_CPU    ; pausa mientras se muestra "THINKING..."
+    CALL ESPERAR
+
      CALL COMPUTER_MOVE
 
  CALL DRAW_BOARD
@@ -753,5 +760,54 @@ PRINT_NEWLINE PROC
     IMPRIMIR MSG_NEWLINE
     RET
 PRINT_NEWLINE ENDP
+
+; -----------------------------------------------
+;  LEER_RELOJ: lee la hora del sistema (INT 21h/2Ch)
+;  Salida: AX = segundos * 100 + centesimas (0 a 5999)
+;  INT 21h/2Ch devuelve CH = hora, CL = minutos,
+;  DH = segundos y DL = centesimas de segundo.
+; -----------------------------------------------
+LEER_RELOJ PROC
+    PUSH CX
+    PUSH DX
+    MOV  AH, 2Ch
+    INT  21h                ; DH = segundos, DL = centesimas
+    MOV  AL, DH
+    MOV  AH, 100
+    MUL  AH                 ; AX = segundos * 100
+    MOV  DH, 0
+    ADD  AX, DX             ; + centesimas
+    POP  DX
+    POP  CX
+    RET
+LEER_RELOJ ENDP
+
+; -----------------------------------------------
+;  ESPERAR: detiene el programa un tiempo
+;  Entrada: AX = centesimas de segundo a esperar (menos de 6000)
+;  Lee el reloj al inicio y lo vuelve a leer hasta que pase el
+;  tiempo pedido. Si el minuto cambia en medio (el reloj pasa de
+;  5999 a 0), se suma 6000 para que la resta siga siendo correcta.
+; -----------------------------------------------
+ESPERAR PROC
+    PUSH AX
+    PUSH BX
+    PUSH SI
+    MOV  SI, AX             ; SI = tiempo a esperar
+    CALL LEER_RELOJ
+    MOV  BX, AX             ; BX = hora de inicio
+ESP_BUCLE:
+    CALL LEER_RELOJ         ; AX = hora actual
+    SUB  AX, BX             ; AX = tiempo que ha pasado
+    JNC  ESP_COMPARA        ; sin prestamo: el minuto no cambio
+    ADD  AX, 6000           ; el minuto cambio: corrige la resta
+ESP_COMPARA:
+    CMP  AX, SI
+    JB   ESP_BUCLE          ; todavia no pasa el tiempo pedido
+    POP  SI
+    POP  BX
+    POP  AX
+    RET
+ESPERAR ENDP
 
 END
