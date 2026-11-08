@@ -105,10 +105,23 @@ POSICIONAR MACRO fila, columna
 ENDM
 
 ; LEER_TECLA: espera una tecla sin mostrarla (INT 21h/08h).
-;   Salida: AL = codigo ASCII de la tecla. Cambia AH.
+;   Las teclas especiales (flechas, F1..F10, etc.) llegan en dos partes:
+;   primero un 0 y despues su codigo de rastreo. Ese segundo codigo puede
+;   coincidir con una letra (flecha abajo = 50h = 'P', flecha derecha =
+;   4Dh = 'M'), asi que se lee y se descarta para que no se confunda con
+;   una tecla del juego.
+;   Salida: AL = codigo ASCII de la tecla, o 0 si fue una tecla especial.
+;   Cambia AH.
 LEER_TECLA MACRO
+    LOCAL lt_fin
     MOV  AH, 08h
     INT  21h
+    CMP  AL, 0                  ; 0 = tecla especial
+    JNE  lt_fin
+    MOV  AH, 08h                ; leer y descartar el segundo codigo
+    INT  21h
+    MOV  AL, 0                  ; se devuelve 0: no es tecla del juego
+lt_fin:
 ENDM
 
 ; MAYUSCULA: si AL es una letra minuscula ('a'..'z') la pasa a
