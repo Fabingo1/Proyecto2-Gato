@@ -12,7 +12,7 @@ Informática, Universidad Nacional (Costa Rica), 2026.
 | Nombre | Responsabilidad |
 |---|---|
 | Fabiano Arroyo | Macros, interfaz, retraso, comentarios, README |
-| _(integrante 2)_ | Menú, pausa, vidas, Game Over y victoria, bitácora de pruebas |
+| Lorenzo Aguilar | Menú, pausa, vidas, Game Over y victoria, bitácora de pruebas |
 | _(integrante 3)_ | Puntaje, High Score, marcador, alineación, informe técnico |
 
 ## Código original
