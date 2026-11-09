@@ -14,7 +14,7 @@ Informática, Universidad Nacional (Costa Rica), 2026.
 |---|---|
 | Fabiano Arroyo | Macros, interfaz, retraso, comentarios, README |
 | Lorenzo Aguilar | Menú, pausa, vidas, Game Over y victoria, bitácora de pruebas |
-| _(integrante 3)_ | Puntaje, High Score, marcador, alineación, informe técnico |
+| Julian Murillo | Puntaje, High Score, marcador, alineación, informe técnico |
 
 ## Código original
 
